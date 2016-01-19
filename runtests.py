@@ -20,6 +20,9 @@ settings.configure(
 
 from django.test.utils import get_runner
 
+import django
+django.setup()
+
 test_runner = get_runner(settings)()
 failures = test_runner.run_tests(['chunks'])
 
