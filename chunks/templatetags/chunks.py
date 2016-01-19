@@ -2,9 +2,10 @@ from django import template
 from django.db import models
 from django.core.cache import cache
 
+from ..models import Chunk
+
 register = template.Library()
 
-Chunk = models.get_model('chunks', 'chunk')
 CACHE_PREFIX = "chunk_"
 
 def do_chunk(parser, token):
