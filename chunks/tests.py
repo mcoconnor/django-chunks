@@ -1,3 +1,4 @@
+import sys
 from django.test import TestCase
 from django.template import Context, Template, TemplateSyntaxError
 from django.core.cache import cache
@@ -108,10 +109,19 @@ class GetChuckTemplateTagTestCase(BaseTestCase):
                                  '{% get_chunk "home_page_left" as chunk_obj invalid %}')
 
     def test_should_fail_if_key_not_quoted(self):
-        with self.assertRaisesRegexp(TemplateSyntaxError, "Key argument to u'get_chunk' must be in quotes"):
-            result = self.render_template('{% load chunks %}'
-                                          '{% get_chunk home_page_left as chunk_obj %}')
+        if sys.version_info[0] >= 3:
+            with self.assertRaisesRegexp(TemplateSyntaxError, "Key argument to 'get_chunk' must be in quotes"):
+                result = self.render_template('{% load chunks %}'
+                                              '{% get_chunk home_page_left as chunk_obj %}')
 
-        with self.assertRaisesRegexp(TemplateSyntaxError, "Key argument to u'get_chunk' must be in quotes"):
-            result = self.render_template('{% load chunks %}'
-                                          '{% get_chunk "home_page_left\' as chunk_obj %}')
+            with self.assertRaisesRegexp(TemplateSyntaxError, "Key argument to 'get_chunk' must be in quotes"):
+                result = self.render_template('{% load chunks %}'
+                                              '{% get_chunk "home_page_left\' as chunk_obj %}')
+        else:
+            with self.assertRaisesRegexp(TemplateSyntaxError, "Key argument to u'get_chunk' must be in quotes"):
+                result = self.render_template('{% load chunks %}'
+                                              '{% get_chunk home_page_left as chunk_obj %}')
+
+            with self.assertRaisesRegexp(TemplateSyntaxError, "Key argument to u'get_chunk' must be in quotes"):
+                result = self.render_template('{% load chunks %}'
+                                              '{% get_chunk "home_page_left\' as chunk_obj %}')

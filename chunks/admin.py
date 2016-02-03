@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Chunk
+from .models import Chunk
 
 class ChunkAdmin(admin.ModelAdmin):
   list_display = ('key','description',)
